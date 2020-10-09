@@ -1,0 +1,4 @@
+ansible_python_interpreter: /usr/bin/python3
+ansible_become_pass: '{{ dep7server_password }}'
+ansible_password: '{{ dep7server_password }}'
+
