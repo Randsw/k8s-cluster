@@ -2,17 +2,17 @@ ansible_host: 10.42.0.1
 ansible_user: cluster01
 #ansible_ssh_private_key_file: ~/.ssh/cluster04
 
-# Network configuration
-netplan_configuration:
-    network:
-        version: 2
-        ethernets:
-            eth0:
-                dhcp4: no
-                dhcp6: no
-                addresses: ["10.42.0.1/24"]
-                #gateway4: '10.42.0.1'
-                #nameservers:
-                #    addresses: ["10.42.0.1", "8.8.8.8"]
-
 docker_users: "{{ ansible_user }}"
+
+ntp_servers:
+  # Use servers from the NTP Pool Project. Approved by Ubuntu Technical Board
+  # on 2011-02-08 (LP: #104525). See http://www.pool.ntp.org/join.html for
+  # more information.
+
+ - 0.ubuntu.pool.ntp.org
+ - 1.ubuntu.pool.ntp.org
+ - 2.ubuntu.pool.ntp.org
+ - 3.ubuntu.pool.ntp.org
+
+ # Use Ubuntu's ntp server as a fallback.
+ - ntp.ubuntu.com

@@ -1,38 +1,44 @@
-- hosts: cluster
+- hosts: cluster !cluster01
   become: yes
-  gather_facts: yes
+  gather_facts: no
 
   vars_files:
     - dep7server_vault.yml 
   
   pre_tasks:
-    - name: check connectivity to hosts (Dummy task)
-      shell: echo "{{ hostvars[item]['ansible_host'] }}" 
-      with_items:  "{{ groups['cluster'] }}"
+    - name: Accept server SSH host keys
+      connection: local
+      become: false
+      shell: |
+        ssh-keygen -F {{ ansible_host }} ||
+        ssh-keyscan -H {{ ansible_host }} >> ~/.ssh/known_hosts
+      register: known_hosts_script
+      changed_when: "'found' not in known_hosts_script.stdout"
 
-      register: cmd_output
+    - name: Gathering Facts
+      setup:
 
-    - name: debug ...
-      debug: var=cmd_output
-      
-    # - name: Accept server SSH host keys
-    #   connection: local
-    #   become: false
-    #   shell: |
-    #     ssh-keygen -F {{ ansible_host }} ||
-    #     ssh-keyscan -H {{ ansible_host }} >> ~/.ssh/known_hosts
-    #   register: known_hosts_script
-    #   changed_when: "'found' not in known_hosts_script.stdout"
+    - name: Add a line to a file if the file does not exist, without passing regexp
+      lineinfile:
+        path: /etc/cloud/cloud-init.disabled
+        line: cloud-init=disabled
+        create: yes
+        state: present
+  
+    - name: Run the equivalent of "apt-get update" as a separate step
+      apt:
+        update_cache: yes
 
-    # - name: Gathering Facts
-    #   setup:
+    - name: Find timezone
+      command: timedatectl 
+      register: timedate_output
+      changed_when: false
 
-    # - name: Add a line to a file if the file does not exist, without passing regexp
-    #   lineinfile:
-    #     path: /etc/cloud/cloud-init.disabled
-    #     line: cloud-init=disabled
-    #     create: yes
-    #     state: present
+    - name: Set time zone
+      command: timedatectl set-timezone Europe/Moscow
+      when: '"Moscow" not in timedate_output.stdout'
 
-#  roles:
-#    - set_up_network
+  roles:
+    - set_up_network
+    - ansible-ntp-master
+    - geerlingguy.docker

@@ -1,4 +1,4 @@
-ansible_host: 10.42.0.254
+ansible_host: 10.42.0.10
 ansible_user: cluster02
 #ansible_ssh_private_key_file: ~/.ssh/cluster04
 
@@ -10,9 +10,13 @@ netplan_configuration:
             eth0:
                 dhcp4: no
                 dhcp6: no
-                addresses: ["10.42.0.254/24"]
+                addresses: ["10.42.0.10/24"]
                 gateway4: '10.42.0.1'
                 nameservers:
                     addresses: ["10.42.0.1", "8.8.8.8"]
 
 docker_users: "{{ ansible_user }}"
+
+ntp_servers:
+ - 10.42.0.1
+

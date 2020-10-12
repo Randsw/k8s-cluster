@@ -1,0 +1,7 @@
+# test file for ntp
+---
+- hosts: localhost
+  connection: local
+  become: true
+  roles:
+    - ../../
