@@ -1,0 +1,11 @@
+- hosts: cluster !cluster01
+  become: no
+  gather_facts: no
+  
+  vars_files:
+    - dep7server_vault.yml 
+
+  tasks:
+    - action: ping
+
+  

@@ -19,3 +19,5 @@ docker_users: "{{ ansible_user }}"
 
 ntp_servers:
  - 10.42.0.1
+
+kubernetes_role: node

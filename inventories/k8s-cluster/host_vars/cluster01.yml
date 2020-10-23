@@ -16,3 +16,5 @@ ntp_servers:
 
  # Use Ubuntu's ntp server as a fallback.
  - ntp.ubuntu.com
+
+kubernetes_role: master
