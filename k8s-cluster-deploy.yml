@@ -24,7 +24,7 @@
     - name: Copy ansible config to $home dir
       copy:
         src:  /etc/kubernetes/admin.conf
-        dest: "/home/{{ ansible_user}}/"
+        dest: "/home/{{ ansible_user}}/.kube"
         owner: "{{ ansible_user}}"
         group: "{{ ansible_user}}"
       delegate_to: localhost
@@ -33,9 +33,9 @@
     - name: Adding the path in the bashrc files  
       lineinfile: 
         dest: "/home/{{ ansible_user}}/.bashrc" 
-        line: 'export KUBECONFIG=$HOME/admin.conf' 
+        line: 'export KUBECONFIG=$HOME/config' 
         insertafter: 'EOF' 
-        regexp: 'export KUBECONFIG=$HOME/admin.conf' 
+        regexp: 'export KUBECONFIG=$HOME/config' 
         state: present
       delegate_to: localhost
       when: ansible_hostname == 'cluster01'
