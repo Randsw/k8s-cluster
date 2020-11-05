@@ -28,7 +28,7 @@
         owner: "{{ ansible_user}}"
         group: "{{ ansible_user}}"
       delegate_to: localhost
-      when: ansible_hostname == 'cluster01'
+      when: inventory_hostname == 'cluster01'
     
     - name: Adding the path in the bashrc files  
       lineinfile: 
@@ -38,4 +38,4 @@
         regexp: 'export KUBECONFIG=$HOME/config' 
         state: present
       delegate_to: localhost
-      when: ansible_hostname == 'cluster01'
+      when: inventory_hostname == 'cluster01'
