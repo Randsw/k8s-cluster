@@ -18,7 +18,7 @@
 
 
   roles:
-    - ansible-role-kubernetes
+    - role-kubernetes
 
   post_tasks:
     - name: Copy ansible config to $home dir
@@ -27,15 +27,16 @@
         dest: "/home/{{ ansible_user}}/.kube"
         owner: "{{ ansible_user}}"
         group: "{{ ansible_user}}"
+        mode: "0600"
       delegate_to: localhost
       when: inventory_hostname == 'cluster01'
     
     - name: Adding the path in the bashrc files  
       lineinfile: 
         dest: "/home/{{ ansible_user}}/.bashrc" 
-        line: 'export KUBECONFIG=$HOME/config' 
+        line: 'export KUBECONFIG=$HOME/.kube/admin.conf' 
         insertafter: 'EOF' 
-        regexp: 'export KUBECONFIG=$HOME/config' 
+        regexp: 'export KUBECONFIG=$HOME/.kube/admin.conf' 
         state: present
       delegate_to: localhost
       when: inventory_hostname == 'cluster01'
