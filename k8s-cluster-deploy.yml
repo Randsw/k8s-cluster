@@ -1,3 +1,4 @@
+---
 - hosts: cluster 
   become: yes
   gather_facts: yes

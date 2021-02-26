@@ -265,6 +265,8 @@ spec:
             periodSeconds: 10
             successThreshold: 1
             timeoutSeconds: 10
+      nodeSelector:
+        kubernetes.io/hostname: cluster01-pc
 
 ---
 

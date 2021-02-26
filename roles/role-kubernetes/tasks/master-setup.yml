@@ -60,6 +60,14 @@
   changed_when: "'created' in weave_result.stdout"
   when: kubernetes_pod_network.cni == 'weave'
 
+- name: Configure Cillium networking
+  command: "{{ item }}"
+  loop:
+    - "kubectl apply -f {{ cillium_manifest_file}}"
+  register: cillium_result
+  changed_when: "'created' in cillium_result"
+  when: kubernetes_pod_network.cni == 'cillium' 
+
 # TODO: Check if taint exists with something like `kubectl describe nodes`
 # instead of using kubernetes_init_stat.stat.exists check.
 - name: Allow pods on master node (if configured).

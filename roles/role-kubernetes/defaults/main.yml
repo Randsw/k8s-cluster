@@ -11,6 +11,7 @@ kubernetes_packages:
 
 kubernetes_version: '1.19'
 kubernetes_version_rhel_package: '1.19.0'
+cillium_version: '1.9.3'
 
 kubernetes_role: master
 
@@ -24,11 +25,14 @@ kubernetes_web_ui_manifest_file: https://raw.githubusercontent.com/kubernetes/da
 
 kubernetes_pod_network:
   # Flannel CNI.
-  #cni: 'flannel'
-  #cidr: '10.244.0.0/16'
+  # cni: 'flannel'
+  # cidr: '10.244.0.0/16'
   # Calico CNI.
-   cni: 'calico'
-   cidr: '192.168.0.0/16'
+  # cni: 'calico'
+  # cidr: '192.168.0.0/16'
+  # Cillium CNI
+  cni: 'cillium'
+  cidr: '10.0.0.0/8'
 
 kubernetes_apiserver_advertise_address: '10.42.0.1'
 kubernetes_version_kubeadm: 'stable-{{ kubernetes_version }}'
@@ -47,3 +51,6 @@ kubernetes_flannel_manifest_file: https://raw.githubusercontent.com/coreos/flann
 
 # Calico config files
 kubernetes_calico_manifest_file: https://docs.projectcalico.org/v3.10/manifests/calico.yaml
+
+#Cillium config files
+cillium_manifest_file: "https://raw.githubusercontent.com/cilium/cilium/{{ cillium_version }}/install/kubernetes/quick-install.yaml"
